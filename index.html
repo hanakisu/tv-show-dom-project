@@ -9,8 +9,32 @@
   </head>
 
   <body>
-    <div id="root">
+    <div id="firstDiv">
+    <select name="dropDown" id="dropDownShow">
+      <option value="select" select disabled>Select Shows</option>
+    </select>
+
     </div>
+
+    <div id="secondDiv">
+    <input type="text" id="searchField" placeholder="Search for episodes">
+    <select name="dropDown" id="dropDown" >
+       <option value="select" select disabled>Select Episodes</option>  
+    </select>
+    <p id="disNum"></p>
+    </div>
+
+    <div id="main">
+      <div id="container"></div>
+    </div>
+    <div id="root"></div>
+    <footer id="footer">
+      This is from <a href=" https://www.tvmaze.com">Tv MAZE</a>
+    </footer>
+    
+   <script src="shows.js"></script>
+      
+    
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
