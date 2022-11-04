@@ -3,28 +3,39 @@
 
 // level 350 -----
 
-function fetchApi() {
-  let url = "https://api.tvmaze.com/shows/82/episodes"
-  
+function fetchApi(episode) {
+  rootElem.style.display = "block";
+  // showListing.style.display = "none";
+  let url = `https://api.tvmaze.com/shows/${episode}/episodes`
+  const datas = []
   fetch(url)
     .then((response) => response.json())
     .then((data) => {
-      makePageForEpisodes(data);
-      dropdownEpi(data);
-      searchEpisodes(data);
+      data.forEach((episode) => {
+        datas.push(episode)
+        
+      })
+
+      showListing.style.display = "none";
+       searchEpisodes(datas)
+       makePageForEpisodes(datas)
+       dropdownEpi(datas)
+      
     })
+      
+     
 }
 
-fetchApi();
- 
+ const showListing = document.getElementById("displayShow")
  const rootElem = document.getElementById("root");
-
+ const allShows = getAllShows();
 
 // const allEpisodes = getAllEpisodes();
 function setup() {
- 
+  dropdownShow(allShows);
+  searchShow(allShows);
+  makeShow(allShows);
   
- //makePageForEpisodes(allEpisodes);
 }
 
 // Level 100--------
@@ -69,7 +80,8 @@ function setup() {
 
 
 let inputs = document.getElementById("searchField");
-function searchEpisodes() {
+
+function searchEpisodes(allEpisodes) {
   inputs.addEventListener("input", (e) => {
     let value = e.target.value.toLowerCase();
     let episodeVis = allEpisodes.filter((epidata) => {
@@ -85,7 +97,7 @@ function searchEpisodes() {
       displayNum.innerHTML = "Display" + episodeVis.length + "/" + allEpisodes.length;
   });
 }
-searchEpisodes();
+// searchEpisodes();
 
 
 
@@ -110,54 +122,96 @@ function dropdownEpi(allEpisodes) {
     makePageForEpisodes(selectedEpisode);
   });
 }
-dropdownEpi();
+// dropdownEpi()
 
 
+    // level 400-------
 
+function dropdownShow() {
+  var divFirst = document.getElementById("dropDownShow");
+  for (var i = 0; i < allShows.length; i++) {
+    var opt = document.createElement("option");
+    opt.setAttribute("value", allShows[i].id);
+    allShows.sort(function (a, b) {
+      var nameA = a.name.toLowerCase(),
+        nameB = b.name.toLowerCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    });
+     opt.innerText =  `${allShows[i].name}`;
+    divFirst.appendChild(opt);
+  }
+  divFirst.addEventListener("change", function () {
+    let selected = this.value;
+    // console.log(selected);
+    rootElem.innerHTML = "";
+    fetchApi(selected);
+    
+  });
+}
 
+ // level 500 ------
+
+function makeShow(allShows) {
+   
+   allShows.forEach((episode) => {
+    const makeShow = document.createElement("div");
+     makeShow.className = "episode-show";
+     makeShow.setAttribute("value", episode.id);
+     showListing.appendChild(makeShow);
+
+    
+
+    const episodeImg = document.createElement("img");
+    episodeImg.src = episode.image.medium;
+     makeShow.appendChild(episodeImg);
+     
+    const showName = document.createElement("h1");
+    showName.innerHTML = episode.name
+    showListing.appendChild(showName);
+
+    const summaryS = document.createElement("p");
+    summaryS.className = "summary-link";
+    summaryS.innerHTML = episode.summary;
+     makeShow.appendChild(summaryS);
+     
+     makeShow.addEventListener("click", () => {
+       let showSelected = episode.id;
+       console.log(showSelected);
+       rootElem.innerHTML = "";
+       fetchApi(showSelected);
+     })
+  })
   
-//level 350
+}
 
 
+let inputShow = document.getElementById("searchShows");
+function searchShow() {
+  inputShow.addEventListener("input", (event) => {
+    let values = event.target.value.toLowerCase();
+    console.log(values);
+    let showEpi = allShows.filter((epiShow) => {
+      return (
+        epiShow.name.toLowerCase().includes(values) ||
+        epiShow.summary.toLowerCase().includes(values)
+      )
+    })
 
-// let allShows = []
+    console.log(showEpi);
+    showListing.innerHTML = "";
+    makeShow(showEpi);
+    
+    // displayShow.innerHTML = "";
+    //   displayShow.innerHTML = "Display" + epiShow.length + "/" + allShows.length;
+  });
+}
 
-
-
-
-// function getAllShows() {
-//   makePageForEpisodes(allShows);
-//   displayShowList(allShows);
-//   showsTitles = document.querySelectorAll("")
-// }
-
-
-// function getShowById(e) {
-//   if (e.target.value) {
-//     showId = e.target.value;
-//   } else {
-//     showId = e.target.id;
-//   }
-
-//   fetch("https://api.tvmaze.com/shows/" + showId + "/episodes")
-//     .then((response) => response.json())
-//     .then((data) => (allEpisodes = data))
-//     .then(() => getEpisodes());
-// }
-
-
-// selectEl.addEventListener("change", (e) => showEpisode(e, allEpisodes));
-// SelectShow.addEventListener("change", (e) => {
-//   getShowById(e);
-// });
-
-// homeBtn.addEventListener("click", () => {
-//   SelectShow.value = -1;
-//   setup();
-// });
-
-
-
+let backBtn = document.getElementById("btn");
+backBtn.addEventListener("click", function () {
+  location.reload();
+})
  window.onload = setup;
 
 
