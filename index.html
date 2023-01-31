@@ -3,19 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TV Show Project | My Name (My GitHub username)</title>
+    <title>TV Show Project | Seble (hanakisu)</title>
     <link href="style.css" rel="stylesheet" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
 
   <body>
-    <div id="root">
+      
+    <div id="firstDiv">
+      <h1 class="titel">TV SHOW PROJECT</h1>
+      <div class="content">
+    <input type="text" id="searchShows" placeholder="Search for shows">
+    <select name="dropDown" id="dropDownShow">
+      <option value="select" select disabled>Select Shows</option>
+    </select>
+    <button id="btn">back-Button</button>
+
+    
+
+    <div id="secondDiv">
+    <input type="text" id="searchField" placeholder="Search for episodes">
+    <select name="dropDown" id="dropDown" >
+       <option value="select" select disabled>Select Episodes</option>  
+    </select>
     </div>
+    <p id="disNum"></p>
+    </div>
+
+    <div id="displayShow"></div>
+    
+    <div id="root" class="roots"></div>
+    
+    
+    
+   <script src="shows.js"></script>
+      
+    
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
 
     <!-- Loads YOUR javascript code -->
     <script src="script.js"></script>
+
+
+    <footer id="footer">
+      This is from <a href=" https://www.tvmaze.com">Tv MAZE</a>
+    </footer>
   </body>
 </html>
